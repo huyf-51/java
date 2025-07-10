@@ -5,6 +5,8 @@ import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.security.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,16 +25,11 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
     }
-    public boolean verifyToken(String token) {
-        return jwtService.validateToken(token);
-    }
-
-    public String generateToken() {
-        return jwtService.generateBearerToken("test");
-    }
 
     public ResponseEntity<?> createUser(UserDTO userDTO) {
+        System.out.println(userDTO);
         if (userRepository.findByUsername(userDTO.getUsername()) != null) {
+            System.out.println(userDTO.getUsername());
             return ResponseEntity.badRequest().body("Username already exists");
         }
 
@@ -56,7 +53,8 @@ public class UserServiceImpl implements UserService {
         if (!result) {
             return ResponseEntity.badRequest().body("Wrong password");
         }
-
-        return ResponseEntity.ok(result);
+        
+        var cookie = ResponseCookie.from("token", this.jwtService.generateToken(user.getId().toString())).path("/").httpOnly(true).build();
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, String.valueOf(cookie)).body("huy");
     }
 }

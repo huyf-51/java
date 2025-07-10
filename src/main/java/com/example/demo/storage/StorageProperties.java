@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties("storage")
 public class StorageProperties {
 
-    private String location = "upload-dir";
+    private String location = "upload";
 
     public String getLocation() {
         return location;

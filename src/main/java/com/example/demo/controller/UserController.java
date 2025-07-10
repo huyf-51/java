@@ -3,7 +3,9 @@ package com.example.demo.controller;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,13 +23,19 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping("/huy")
+    public String getUser() {
+        return "huy";
+    }
+
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<?> signup(@Valid @RequestBody UserDTO userDTO) {
+        System.out.println(userDTO);
         return this.userService.createUser(userDTO);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<?> login(@Valid @RequestBody UserDTO userDTO) {
         return this.userService.findUser(userDTO);
     }
 

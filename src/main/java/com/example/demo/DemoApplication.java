@@ -10,7 +10,7 @@ public class DemoApplication {
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(DemoApplication.class, args);
         String appName = context.getEnvironment().getProperty("spring.application.name");
-        System.out.println("Application name: " + appName);
+        System.out.println("Application " + appName + " is running");
     }
 
 }
