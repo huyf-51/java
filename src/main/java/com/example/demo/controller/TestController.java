@@ -1,25 +1,23 @@
 package com.example.demo.controller;
 
-import com.example.demo.service.HomeService;
-import com.example.demo.service.UserService;
+import com.example.demo.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
-public class HomeController {
+public class TestController {
     @Value("${spring.application.name}")
     private String appName;
 
-    final private HomeService homeService;
+    final private TestService homeService;
 
     @Autowired
-    public HomeController(HomeService homeService) {
+    public TestController(TestService homeService) {
         this.homeService = homeService;
     }
 
@@ -42,7 +40,6 @@ public class HomeController {
 
     @GetMapping("/home")
     public String home() throws Exception {
-        throw new Exception("hello world");
-//        return "home";
+        return "home";
     }
 }

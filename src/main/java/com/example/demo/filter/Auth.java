@@ -12,7 +12,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-//@Service
+@Service
 public class Auth extends OncePerRequestFilter {
     private JWTService jwtService;
 
@@ -20,22 +20,27 @@ public class Auth extends OncePerRequestFilter {
     public Auth(JWTService jwtService) {
         this.jwtService = jwtService;
     }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        return request.getRequestURI().startsWith("/api/users") || request.getRequestURI().equals("/api/redis");
+    }
+
     @Override
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         System.out.println("Auth filter");
-        if (request.getRequestURI().equals("/api/gen") || request.getRequestURI().equals("/api/redis")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
         try {
-            Cookie[] cookies = request.getCookies();
-            String tokenValue = null;
-            for (Cookie cookie : cookies) {
-                if ("token".equals(cookie.getName())) {
-                    tokenValue = cookie.getValue();
-                    break;
-                }
-            }
+            // get token from cookie
+//            Cookie[] cookies = request.getCookies();
+//            String tokenValue = null;
+//            for (Cookie cookie : cookies) {
+//                if ("token".equals(cookie.getName())) {
+//                    tokenValue = cookie.getValue();
+//                    break;
+//                }
+//            }
+            // get token from header
+            String tokenValue = request.getHeader("Authorization");
             boolean result = this.jwtService.validateToken(tokenValue);
             if (!result) {
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");

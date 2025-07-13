@@ -23,14 +23,8 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/huy")
-    public String getUser() {
-        return "huy";
-    }
-
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@Valid @RequestBody UserDTO userDTO) {
-        System.out.println(userDTO);
         return this.userService.createUser(userDTO);
     }
 
