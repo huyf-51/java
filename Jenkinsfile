@@ -25,7 +25,7 @@ pipeline {
 				sh 'docker build -t huyfst/java .'
                 sh 'docker login -u huyfst -p %DOCKER_PASS%'
                 sh 'docker push huyfst/java'
-                sh 'trivy image huyfst/learn-jenkins'
+                sh 'trivy image huyfst/java'
             }
         }
         stage('Deploy to AWS') {

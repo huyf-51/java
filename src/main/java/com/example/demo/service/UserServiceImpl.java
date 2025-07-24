@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.UserDTO;
-import com.example.demo.entity.User;
+import com.example.demo.model.entity.User;
 import com.example.demo.redis.BloomFilter;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.security.JWTService;
@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
         if (!result) {
             return ResponseEntity.badRequest().body("Wrong password");
         }
-        
+
         var cookie = ResponseCookie.from("token", this.jwtService.generateToken(user.getId().toString())).path("/").httpOnly(true).build();
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, String.valueOf(cookie)).body("login successful");
     }
